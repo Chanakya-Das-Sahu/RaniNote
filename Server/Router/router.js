@@ -10,8 +10,14 @@ router.post("/setData",async(req,res)=>{
     // console.log(req.body)
     //   await Note.create({TodoItem});
     const newUser = new User({uname,mono,email,pass,cpass})
-    await newUser.save();
-    res.send({msg:"signup successfully"});
+    // if(newUser){
+    //   res.send("user already exist")
+    // }
+    // else{ss
+      await newUser.save();
+      res.send({msg:"signup successfully"});
+    // }s
+   
    } catch (error) {
     res.send("Iternal server error from setData");
    }
@@ -20,17 +26,19 @@ router.post("/setData",async(req,res)=>{
 router.post("/getData",async(req,res)=>{
   try {
     console.log("getData")
-    const {email,pass}=req.body
-    console.log(email,pass)
-    const user = await User.find({email});
-    console.log(user)
-    if(user){
-      res.send("login successfully")
-      res.send(user)
+    const {em,pass}=req.body
+    console.log(em,pass)
+    const checkUser = await User.find({email:em});
+    console.log(checkUser)
+    if(checkUser){
+      res.send({msg:"login successfully"})
+      console.log("loginsuccess")
+      res.send(checkUser) 
       
     }
     else{
-      res.send("invalid email or password")
+      res.send({msg:"invalid email or password"})
+      console.log("invalid email or password")
     }
   } catch (error) {
     console.error("getData",error)
